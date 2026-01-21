@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate, useParams, Navigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useParams, Navigate, useLocation } from 'react-router-dom';
 import questionsRaw from './questions.json';
 import { auth, signInWithGoogle, logOut, db } from './firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc, deleteField, getDocs, collection, query, where } from 'firebase/firestore';
+import { translations } from './translations';
+
+type Lang = 'fr' | 'en';
 
 interface QuestionData {
   id: string;
   question: {
     fr: string;
+    en: string;
   };
   answers: {
     yes: string;
@@ -18,20 +22,32 @@ interface QuestionData {
 
 interface AppQuestion {
   uniqueId: string;
-  text: string;
+  text: { [key in Lang]: string };
 }
 
 const questionsMap = new Map((questionsRaw as QuestionData[]).map(q => [q.id, q]));
 const questions: AppQuestion[] = (questionsRaw as QuestionData[]).map((q) => ({
   uniqueId: q.id,
-  text: q.question.fr
+  text: q.question
 }));
 
+function LanguageRedirect() {
+    const browserLang = navigator.language.startsWith('fr') ? 'fr' : 'en';
+    return <Navigate to={`/${browserLang}`} replace />;
+}
+
 function UserProfile({ isGuest }: { isGuest?: boolean }) {
-    const { username } = useParams();
+    const { username, lang } = useParams<{ username: string; lang: string }>();
+    const currentLang = (lang === 'fr' || lang === 'en') ? lang : 'en';
+    const t = translations[currentLang];
+    
+    if (lang !== 'fr' && lang !== 'en') {
+        const browserLang = navigator.language.startsWith('fr') ? 'fr' : 'en';
+        return <Navigate to={`/${browserLang}`} replace />;
+    }
 
     if (username === 'opinions') {
-        return <Navigate to="/" replace />;
+        return <Navigate to={`/${currentLang}`} replace />;
     }
 
     const [profileData, setProfileData] = useState<{ id: string, question: string, tag: string }[]>([]);
@@ -56,12 +72,12 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                 const stored = localStorage.getItem('opinions_answers');
                 const answers = stored ? JSON.parse(stored) : {};
                 const data = Object.entries(answers).map(([id, answer]) => {
-                    const q = questionsMap.get(id);
-                    if (!q) return null;
+                    const qData = questionsMap.get(id);
+                    if (!qData) return null;
                     return {
                         id,
-                        question: q.question.fr,
-                        tag: answer === 'yes' ? (q.answers.yes as string) : (q.answers.no as string)
+                        question: qData.question[currentLang],
+                        tag: answer === 'yes' ? (qData.answers.yes as string) : (qData.answers.no as string)
                     };
                 }).filter(Boolean) as { id: string, question: string, tag: string }[];
                 setProfileData(data);
@@ -77,7 +93,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                 const querySnapshot = await getDocs(q);
 
                 if (querySnapshot.empty) {
-                    setError("Utilisateur introuvable.");
+                    setError(t.userNotFound);
                     setLoading(false);
                     return;
                 }
@@ -88,30 +104,30 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                 const answers = userData.answers || {};
 
                 const data = Object.entries(answers).map(([id, answer]) => {
-                    const q = questionsMap.get(id);
-                    if (!q) return null;
+                    const qData = questionsMap.get(id);
+                    if (!qData) return null;
                     return {
                         id,
-                        question: q.question.fr,
-                        tag: answer === 'yes' ? (q.answers.yes as string) : (q.answers.no as string)
+                        question: qData.question[currentLang],
+                        tag: answer === 'yes' ? (qData.answers.yes as string) : (qData.answers.no as string)
                     };
                 }).filter(Boolean) as { id: string, question: string, tag: string }[];
 
                 setProfileData(data);
             } catch (e) {
                 console.error(e);
-                setError("Erreur lors du chargement du profil.");
+                setError(t.errorLoadingProfile);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchProfile();
-    }, [username, isGuest]);
+    }, [username, isGuest, currentLang]);
 
     const handleDeleteAnswer = async (questionId: string) => {
         if (isGuest) {
-             if (confirm("Voulez-vous supprimer cet avis ?")) {
+             if (confirm(t.deleteConfirm)) {
                 const stored = localStorage.getItem('opinions_answers');
                 if (stored) {
                     const answers = JSON.parse(stored);
@@ -125,7 +141,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
 
         if (!currentUser || !profileUid || currentUser.uid !== profileUid) return;
         
-        if (confirm("Voulez-vous supprimer cet avis ?")) {
+        if (confirm(t.deleteConfirm)) {
             try {
                 const userRef = doc(db, "users", profileUid);
                 await updateDoc(userRef, {
@@ -142,26 +158,27 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                 setProfileData(prev => prev.filter(item => item.id !== questionId));
             } catch (e) {
                 console.error("Error deleting field", e);
-                alert("Erreur lors de la suppression.");
+                alert(t.deleteError);
             }
         }
     };
 
-    if (loading) return <div className="container">Chargement...</div>;
-    if (error) return <div className="container">{error} <br/> <button className="nav-btn" onClick={() => navigate('/')}>Retour à l'accueil</button></div>;
+    if (loading) return <div className="container">{t.loading}</div>;
+    if (error) return <div className="container">{error} <br/> <button className="nav-btn" onClick={() => navigate(`/${currentLang}`)}>{t.backhome}</button></div>;
 
     const isOwner = isGuest || (currentUser && profileUid && currentUser.uid === profileUid);
 
     const handleLogout = async () => {
         await logOut();
         localStorage.removeItem('opinions_answers');
-        navigate('/');
+        navigate(`/${currentLang}`);
     };
     
     const handleLogin = async () => {
         try {
             await signInWithGoogle();
-            navigate('/');
+             // Login usually redirects, we might need to handle redirect back
+             // for now assumes it stays on page but auth state changes
         } catch (e) {
             console.error(e);
         }
@@ -169,34 +186,34 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
 
     return (
         <div className="container fade-in profile-container">
-            <div className="app-logo" onClick={() => navigate('/')}>Opinions</div>
+            <div className="app-logo" onClick={() => navigate(`/${currentLang}`)}>Opinions</div>
             <nav className="top-nav">
-                    <button className="nav-btn" onClick={() => navigate('/')}>Aller au quiz</button>
+                    <button className="nav-btn" onClick={() => navigate(`/${currentLang}`)}>{t.backToHome}</button>
             </nav>
 
             <header className="profile-header">
                 <span className="profile-title">
                     {isGuest ? (
-                        <>Mon profil <strong>(non connecté)</strong></>
+                        <>{t.myProfile} <strong>{t.notConnected}</strong></>
                     ) : isOwner ? (
-                        <>Mon profil <strong>{username}</strong></>
+                        <>{t.myProfile} <strong>{username}</strong></>
                     ) : (
-                        <>Profil de <strong>{username}</strong></>
+                        <>{t.profileOf} <strong>{username}</strong></>
                     )}
                 </span>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     {isGuest && (
-                        <button className="nav-btn" onClick={handleLogin}>S'enregistrer</button>
+                        <button className="nav-btn" onClick={handleLogin}>{t.login}</button>
                     )}
                     {!isGuest && isOwner && (
-                        <button className="nav-btn" onClick={handleLogout}>Se déconnecter</button>
+                        <button className="nav-btn" onClick={handleLogout}>{t.logout}</button>
                     )}
                 </div>
             </header>
 
             <div className="tags-cloud">
                 {profileData.length === 0 ? (
-                    <p>Cet utilisateur n'a pas encore répondu aux questions.</p>
+                    <p>{t.notAnswered}</p>
                 ) : (
                     profileData.map((item) => (
                         <span
@@ -214,19 +231,28 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
             </div>
 
             <div className={hoveredQuestion ? "hovered-question-display" : "hovered-question-display fade-mid"}>
-                {hoveredQuestion || "Survolez un tag pour voir la question associée"}
+                {hoveredQuestion || t.hoverTag}
             </div>
         </div>
     );
 }
 
 function Home() {
+  const { lang } = useParams<{ lang: string }>();
+  const currentLang = (lang === 'fr' || lang === 'en') ? lang : 'en';
+  const t = translations[currentLang];
+  
   const [currentQuestion, setCurrentQuestion] = useState<AppQuestion | null>(null);
   const [fading, setFading] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [username, setUsername] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  if (lang !== 'fr' && lang !== 'en') {
+      const browserLang = navigator.language.startsWith('fr') ? 'fr' : 'en';
+      return <Navigate to={`/${browserLang}`} replace />;
+  }
 
   const generateUID = () => {
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -295,7 +321,7 @@ function Home() {
                 uname = generateUID();
                 await setDoc(docRef, { username: uname }, { merge: true });
             }
-            navigate(`/${uname}`);
+            navigate(`/${currentLang}/${uname}`);
         }
     } catch (e: any) {
         console.error(e);
@@ -305,7 +331,7 @@ function Home() {
 
   const handleProfileClick = () => {
     if (username) {
-        navigate(`/${username}`);
+        navigate(`/${currentLang}/${username}`);
     } else {
         handleLogin();
     }
@@ -364,17 +390,17 @@ function Home() {
       <div className="container fade-in">
         <div className="app-logo">Opinions</div>
         <nav className="top-nav">
-            <button className="nav-btn" onClick={handleProfileClick}>{user ? 'Mon profil' : 'Se connecter'}</button>
+            <button className="nav-btn" onClick={handleProfileClick}>{user ? t.myProfile : t.login}</button>
         </nav>
         <div>
-          <p style={{ fontSize: '1.2rem', color: '#888', marginTop: '4rem' }}>Vous avez répondu à toutes les questions.</p>
-          <p style={{ fontSize: '1.2rem', color: '#888', marginTop: '5px' }}>Suggérez de nouvelles questions sur <a href="https://github.com/mtripnaux/opinions">GitHub</a>.</p>
+          <p style={{ fontSize: '1.2rem', color: '#888', marginTop: '4rem' }}>{t.finished}</p>
+          <p style={{ fontSize: '1.2rem', color: '#888', marginTop: '5px' }}>{t.suggest} <a href="https://github.com/mtripnaux/opinions">GitHub</a>.</p>
           {!user && (
               <button 
-                onClick={() => navigate('/local')} 
+                onClick={() => navigate(`/${currentLang}/local`)} 
                 style={{ marginTop: '2rem', display: 'block', marginInline: 'auto' }}
             >
-                Voir votre profil
+                {t.seeProfile}
             </button>
           )}
         </div>
@@ -389,16 +415,16 @@ function Home() {
       <div className="app-logo">Opinions</div>
       <nav className="top-nav">
         <button className="nav-btn" onClick={handleProfileClick}>
-            {user ? 'Profil' : 'Se connecter'}
+            {user ? t.profile : t.login}
         </button>
       </nav>
-      <h1 className="question-text">{currentQuestion.text}</h1>
+      <h1 className="question-text">{currentQuestion.text[currentLang]}</h1>
       <div className="actions">
-        <button onClick={() => handleAnswer('yes')}>Oui</button>
-        <button onClick={() => handleAnswer('no')}>Non</button>
+        <button onClick={() => handleAnswer('yes')}>{t.yes}</button>
+        <button onClick={() => handleAnswer('no')}>{t.no}</button>
       </div>
       <div className="footer">
-        <button className="skip-btn" onClick={pickRandomQuestion}>Passer cette question</button>
+        <button className="skip-btn" onClick={pickRandomQuestion}>{t.skip}</button>
       </div>
     </div>
   );
@@ -407,9 +433,10 @@ function Home() {
 export default function App() {
     return (
         <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/local" element={<UserProfile isGuest={true} />} />
-            <Route path="/:username" element={<UserProfile />} />
+            <Route path="/" element={<LanguageRedirect />} />
+            <Route path="/:lang" element={<Home />} />
+            <Route path="/:lang/local" element={<UserProfile isGuest={true} />} />
+            <Route path="/:lang/:username" element={<UserProfile />} />
         </Routes>
     );
 }
