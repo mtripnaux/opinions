@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import { Routes, Route, useNavigate, useParams, Navigate } from 'react-router-dom';
 import questionsRaw from './questions.json';
 import { auth, signInWithGoogle, logOut, db } from './firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
@@ -29,6 +29,11 @@ const questions: AppQuestion[] = (questionsRaw as QuestionData[]).map((q) => ({
 
 function UserProfile({ isGuest }: { isGuest?: boolean }) {
     const { username } = useParams();
+
+    if (username === 'opinions') {
+        return <Navigate to="/" replace />;
+    }
+
     const [profileData, setProfileData] = useState<{ id: string, question: string, tag: string }[]>([]);
     const [hoveredQuestion, setHoveredQuestion] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
