@@ -174,8 +174,8 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                     <button className="nav-btn" onClick={() => navigate('/')}>Aller au quiz</button>
             </nav>
 
-            <header className="profile-header" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="nav-btn">
+            <header className="profile-header">
+                <span className="profile-title">
                     {isGuest ? (
                         <>Mon profil <strong>(non connecté)</strong></>
                     ) : isOwner ? (

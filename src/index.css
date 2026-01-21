@@ -128,8 +128,15 @@ button:focus {
 .profile-header {
   width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
+}
+
+.profile-title {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  color: #aaa;
 }
 
 .tags-cloud {
@@ -188,4 +195,62 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+    padding-top: 5rem;
+  }
+
+  .container {
+    gap: 1.5rem;
+  }
+
+  .app-logo {
+    top: 1rem;
+    left: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .top-nav {
+    top: 1rem;
+    right: 0.5rem;
+  }
+
+  .nav-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .tags-cloud {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    gap: 0.3rem 0.8rem;
+  }
+  
+  .question-text {
+    font-size: 1.6rem;
+    padding: 0 1rem;
+  }
+
+  .actions {
+    gap: 1rem;
+  }
+
+  button {
+    padding: 0.6rem 2rem;
+  }
+
+  .hovered-question-display {
+    margin-top: 2rem;
+    font-size: 1rem;
+    padding-top: 1rem;
+  }
 }
