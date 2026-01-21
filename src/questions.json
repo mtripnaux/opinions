@@ -108,5 +108,135 @@
       "yes": "pro-fission",
       "no": "anti-fission"
     }
+  },
+  {
+    "id": "god",
+    "question": {
+      "fr": "Une divinité supérieure existe."
+    },
+    "answers": {
+      "yes": "deism",
+      "no": "atheism"
+    }
+  },
+  {
+    "id": "q14",
+    "question": {
+      "fr": "Tout ce qui arrive dans l'univers est prédestiné."
+    },
+    "answers": {
+      "yes": "determinism",
+      "no": "non-determinism"
+    }
+  },
+  {
+    "id": "ubi",
+    "question": {
+      "fr": "Le revenu universel devrait être instauré."
+    },
+    "answers": {
+      "yes": "pro-ubi",
+      "no": "anti-ubi"
+    }
+  },
+  {
+    "id": "afterlife",
+    "question": {
+      "fr": "La vie après la mort existe."
+    },
+    "answers": {
+      "yes": "afterlife",
+      "no": "no-afterlife"
+    }
+  },
+  {
+    "id": "q18",
+    "question": {
+      "fr": "L'argent contribue directement au bonheur."
+    },
+    "answers": {
+      "yes": "money-happy",
+      "no": "money-neutral"
+    }
+  },
+  {
+    "id": "fermi",
+    "question": {
+      "fr": "Nous sommes seuls dans l'Univers."
+    },
+    "answers": {
+      "yes": "alone",
+      "no": "aliens-exist"
+    }
+  },
+  {
+    "id": "q20",
+    "question": {
+      "fr": "Il faut légaliser toutes les drogues et encadrer leur production."
+    },
+    "answers": {
+      "yes": "legalize-all",
+      "no": "prohibition"
+    }
+  },
+  {
+    "id": "q22",
+    "question": {
+      "fr": "Le monde serait meilleur avec une seule langue universelle."
+    },
+    "answers": {
+      "yes": "one-lang",
+      "no": "lang-diversity"
+    }
+  },
+  {
+    "id": "q24",
+    "question": {
+      "fr": "Le capitalisme est un système économique valable."
+    },
+    "answers": {
+      "yes": "pro-capitalism",
+      "no": "anti-capitalism"
+    }
+  },
+  {
+    "id": "q26",
+    "question": {
+      "fr": "L'IA pourra un jour avoir une conscience phénoménale."
+    },
+    "answers": {
+      "yes": "ai-conscious",
+      "no": "ai-unconscious"
+    }
+  },
+  {
+    "id": "q27",
+    "question": {
+      "fr": "La prison doit punir avant de réhabiliter."
+    },
+    "answers": {
+      "yes": "punitive-justice",
+      "no": "rehab-justice"
+    }
+  },
+  {
+    "id": "q28",
+    "question": {
+      "fr": "Les frontières entre pays devraient être abolies."
+    },
+    "answers": {
+      "yes": "no-borders",
+      "no": "national-sovereignty"
+    }
+  },
+  {
+    "id": "q29",
+    "question": {
+      "fr": "Manger de la viande est moralement problématique."
+    },
+    "answers": {
+      "yes": "meat-immoral",
+      "no": "meat-moral"
+    }
   }
 ]
