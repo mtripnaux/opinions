@@ -154,6 +154,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
 
     const handleLogout = async () => {
         await logOut();
+        localStorage.removeItem('opinions_answers');
         navigate('/');
     };
     
