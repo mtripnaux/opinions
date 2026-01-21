@@ -1,0 +1,112 @@
+[
+  {
+    "id": "q1",
+    "question": {
+      "fr": "Dans certaines conditions, la peine de mort est justifiée."
+    },
+    "answers": {
+      "yes": "pro-death-penalty",
+      "no": "anti-death-penalty"
+    }
+  },
+  {
+    "id": "q2",
+    "question": {
+      "fr": "L'espace-temps est discret."
+    },
+    "answers": {
+      "yes": "st-discrete",
+      "no": "st-continuous"
+    }
+  },
+  {
+    "id": "q3",
+    "question": {
+      "fr": "Les animaux devraient avoir des droits similaires à ceux des humains."
+    },
+    "answers": {
+      "yes": "animal-rights",
+      "no": "animal-use"
+    }
+  },
+  {
+    "id": "q4",
+    "question": {
+      "fr": "L'intelligence artificielle représente une menace existentielle pour l'humanité."
+    },
+    "answers": {
+      "yes": "ai-threat",
+      "no": "ai-benign"
+    }
+  },
+  {
+    "id": "q5",
+    "question": {
+      "fr": "La colonisation d'autres planètes est une bonne solution pour la survie à long terme de l'humanité."
+    },
+    "answers": {
+      "yes": "space-colonization",
+      "no": "earth-first"
+    }
+  },
+  {
+    "id": "q6",
+    "question": {
+      "fr": "L'extinction de certaines espèces est acceptable si elle profite au progrès humain."
+    },
+    "answers": {
+      "yes": "extinction-acceptable",
+      "no": "extinction-unacceptable"
+    }
+  },
+  {
+    "id": "q7",
+    "question": {
+      "fr": "Les homosexuels devraient avoir les mêmes droits que les hétérosexuels."
+    },
+    "answers": {
+      "yes": "homosexual-rights",
+      "no": "homophobia"
+    }
+  },
+  {
+    "id": "q8",
+    "question": {
+      "fr": "Il serait bénéfique que les religions perdent de l'influence."
+    },
+    "answers": {
+      "yes": "anti-religion",
+      "no": "pro-religion"
+    }
+  },
+  {
+    "id": "q9",
+    "question": {
+      "fr": "L'enrichissement personnel est bénéfique pour l'économie."
+    },
+    "answers": {
+      "yes": "pro-personal-enrichment",
+      "no": "anti-personal-enrichment"
+    }
+  },
+  {
+    "id": "q10",
+    "question": {
+      "fr": "Le réchauffement climatique existe, est causé par l'activité humaine et peut avoir des conséquences graves."
+    },
+    "answers": {
+      "yes": "pro-climate-change",
+      "no": "climate-change-denial"
+    }
+  },
+  {
+    "id": "q11",
+    "question": {
+      "fr": "La fission nucléaire, bien entretenue, est une source d'énergie valable."
+    },
+    "answers": {
+      "yes": "pro-fission",
+      "no": "anti-fission"
+    }
+  }
+]
