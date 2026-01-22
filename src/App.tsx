@@ -56,6 +56,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
     const [error, setError] = useState<string | null>(null);
     const [profileUid, setProfileUid] = useState<string | null>(null);
     const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [compatibility, setCompatibility] = useState<number | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -81,6 +82,27 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                     };
                 }).filter(Boolean) as { id: string, question: string, tag: string }[];
                 setProfileData(data);
+                
+                const myStored = localStorage.getItem('opinions_answers');
+                const myAnswers = myStored ? JSON.parse(myStored) : {};
+                
+                let common = 0;
+                let same = 0;
+                for (const [id, ans] of Object.entries(answers as Record<string, string>)) {
+                    if (myAnswers[id]) {
+                        common++;
+                        if (myAnswers[id] === ans) {
+                            same++;
+                        }
+                    }
+                }
+                
+                if (common > 0) {
+                    setCompatibility(Math.round((same / common) * 100));
+                } else {
+                    setCompatibility(null);
+                }
+
                 setLoading(false);
                 return;
             }
@@ -114,6 +136,27 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                 }).filter(Boolean) as { id: string, question: string, tag: string }[];
 
                 setProfileData(data);
+
+                const myStored = localStorage.getItem('opinions_answers');
+                const myAnswers = myStored ? JSON.parse(myStored) : {};
+                
+                let common = 0;
+                let same = 0;
+                for (const [id, ans] of Object.entries(answers as Record<string, string>)) {
+                    if (myAnswers[id]) {
+                        common++;
+                        if (myAnswers[id] === ans) {
+                            same++;
+                        }
+                    }
+                }
+                
+                if (common > 0) {
+                    setCompatibility(Math.round((same / common) * 100));
+                } else {
+                    setCompatibility(null);
+                }
+
             } catch (e) {
                 console.error(e);
                 setError(t.errorLoadingProfile);
@@ -156,7 +199,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                 }
 
                 setProfileData(prev => prev.filter(item => item.id !== questionId));
-            } catch (e) {
+            } catch (e) { {compatibility !== null && <span style={{fontSize: '0.8rem', opacity: 0.7}}>({compatibility}% compat)</span>}
                 console.error("Error deleting field", e);
                 alert(t.deleteError);
             }
