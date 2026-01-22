@@ -199,7 +199,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                 }
 
                 setProfileData(prev => prev.filter(item => item.id !== questionId));
-            } catch (e) { {compatibility !== null && <span style={{fontSize: '0.8rem', opacity: 0.7}}>({compatibility}% compat)</span>}
+            } catch (e) { {compatibility !== null && <span>({compatibility}% {t.compat})</span>}
                 console.error("Error deleting field", e);
                 alert(t.deleteError);
             }
@@ -241,7 +241,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                     ) : isOwner ? (
                         <>{t.myProfile} <strong>{username}</strong></>
                     ) : (
-                        <>{t.profileOf} <strong>{username}</strong></>
+                        <>{t.profileOf} <strong>{username}</strong> {compatibility !== null ? <span style={{fontSize: '0.8rem', opacity: 0.7}}>({compatibility}% {t.compat})</span> : <span style={{fontSize: '0.8rem', opacity: 0.5}} title={t.noCommon}>(-)</span>}</>
                     )}
                 </span>
                 <div style={{ display: 'flex', gap: '1rem' }}>

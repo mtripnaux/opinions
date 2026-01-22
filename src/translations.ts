@@ -21,7 +21,9 @@ export const translations = {
     suggest: "Suggérez de nouvelles questions sur",
     seeProfile: "Voir votre profil",
     profileOf: "Profil de",
-    notConnected: "(non connecté)"
+    notConnected: "(non connecté)",
+    compat: "en commun",
+    noCommon: "Pas de questions communes"
   },
   en: {
     yes: "Yes",
@@ -45,6 +47,8 @@ export const translations = {
     suggest: "Suggest new questions on",
     seeProfile: "View your profile",
     profileOf: "Profile of",
-    notConnected: "(not connected)"
+    notConnected: "(not connected)",
+    compat: "match",
+    noCommon: "No common questions"
   }
 };
