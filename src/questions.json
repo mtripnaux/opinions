@@ -262,5 +262,181 @@
       "yes": "meat-immoral",
       "no": "meat-moral"
     }
+  },
+  {
+    "id": "genetic-editing",
+    "question": {
+      "fr": "La modification génétique des embryons humains pour éliminer les maladies devrait être autorisée.",
+      "en": "Genetic modification of human embryos to eliminate diseases should be allowed."
+    },
+    "answers": {
+      "yes": "pro-gene-editing",
+      "no": "anti-gene-editing"
+    }
+  },
+  {
+    "id": "land-ownership",
+    "question": {
+      "fr": "La propriété privée de la terre est un droit naturel.",
+      "en": "Private ownership of land is a natural right."
+    },
+    "answers": {
+      "yes": "land-right",
+      "no": "land-commons"
+    }
+  },
+  {
+    "id": "crypto-future",
+    "question": {
+      "fr": "Les cryptomonnaies finiront par remplacer les monnaies fiduciaires (fiat).",
+      "en": "Cryptocurrencies will eventually replace fiat currencies."
+    },
+    "answers": {
+      "yes": "crypto-believer",
+      "no": "fiat-defender"
+    }
+  },
+  {
+    "id": "privacy-security",
+    "question": {
+      "fr": "Il est acceptable de sacrifier un peu de vie privée pour plus de sécurité.",
+      "en": "It is acceptable to sacrifice some privacy for greater security."
+    },
+    "answers": {
+      "yes": "security-first",
+      "no": "privacy-first"
+    }
+  },
+  {
+    "id": "free-speech",
+    "question": {
+      "fr": "La liberté d'expression doit être absolue, même pour les propos offensants.",
+      "en": "Freedom of speech must be absolute, even for offensive speech."
+    },
+    "answers": {
+      "yes": "speech-absolute",
+      "no": "speech-regulated"
+    }
+  },
+  {
+    "id": "meritocracy",
+    "question": {
+      "fr": "La réussite dépend plus du travail acharné que de la chance.",
+      "en": "Success depends more on hard work than on luck."
+    },
+    "answers": {
+      "yes": "meritocracy",
+      "no": "social-determinism"
+    }
+  },
+  {
+    "id": "art-artist",
+    "question": {
+      "fr": "Il faut séparer l'oeuvre de l'artiste.",
+      "en": "One must separate the art from the artist."
+    },
+    "answers": {
+      "yes": "separate-art-artist",
+      "no": "link-art-artist"
+    }
+  },
+  {
+    "id": "human-nature",
+    "question": {
+      "fr": "L'être humain est naturellement bon.",
+      "en": "Human beings are naturally good."
+    },
+    "answers": {
+      "yes": "human-good",
+      "no": "human-selfish"
+    }
+  },
+  {
+    "id": "internet-anonymity",
+    "question": {
+      "fr": "L'anonymat sur Internet devrait être supprimé.",
+      "en": "Anonymity on the Internet should be abolished."
+    },
+    "answers": {
+      "yes": "no-anonymity",
+      "no": "pro-anonymity"
+    }
+  },
+  {
+    "id": "gender-roles",
+    "question": {
+      "fr": "Les rôles de genre traditionnels sont nécessaires à l'équilibre de la société.",
+      "en": "Traditional gender roles are necessary for society's balance."
+    },
+    "answers": {
+      "yes": "trad-gender",
+      "no": "modern-gender"
+    }
+  },
+  {
+    "id": "math-nature",
+    "question": {
+      "fr": "Les connaissances sont découvertes, pas construites ou inventées.",
+      "en": "Knowledge is discovered, not constructed or invented."
+    },
+    "answers": {
+      "yes": "platonism",
+      "no": "constructivism"
+    }
+  },
+  {
+    "id": "consciousness-materialism",
+    "question": {
+      "fr": "La conscience n'est qu'un processus biologique du cerveau.",
+      "en": "Consciousness is merely a biological brain process."
+    },
+    "answers": {
+      "yes": "materialism",
+      "no": "dualism"
+    }
+  },
+  {
+    "id": "utilitarianism",
+    "question": {
+      "fr": "Il est acceptable de sacrifier une personne innocente pour en sauver plusieurs.",
+      "en": "It is acceptable to sacrifice one innocent person to save many."
+    },
+    "answers": {
+      "yes": "utilitarianism",
+      "no": "deontologism"
+    }
+  },
+  {
+    "id": "simulation-hypothesis",
+    "question": {
+      "fr": "Il est probable que nous vivions dans une simulation informatique.",
+      "en": "It is likely that we are living in a computer simulation."
+    },
+    "answers": {
+      "yes": "simulation-believer",
+      "no": "simulation-skeptic"
+    }
+  },
+  {
+    "id": "objective-truth",
+    "question": {
+      "fr": "La vérité objective existe indépendamment de notre perception.",
+      "en": "Objective truth exists independent of our perception."
+    },
+    "answers": {
+      "yes": "objectivism",
+      "no": "relativism"
+    }
+  },
+  {
+    "id": "technocracy",
+    "question": {
+      "fr": "Le pouvoir devrait être confié à des experts plutôt qu'aux élus du peuple.",
+      "en": "Power should be entrusted to experts rather than elected representatives."
+    },
+    "answers": {
+      "yes": "technocracy",
+      "no": "democracy"
+    }
   }
 ]
