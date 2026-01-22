@@ -162,6 +162,18 @@ button:focus {
   text-decoration-color: #e0e0e0;
 }
 
+.opinion-tag.match {
+  text-decoration: underline;
+  text-decoration-color: #b4ffb4; /* light green */
+  text-decoration-thickness: 2px;
+}
+
+.opinion-tag.mismatch {
+  text-decoration: underline;
+  text-decoration-color: #ffc0c0; /* light coral */
+  text-decoration-thickness: 2px;
+}
+
 .opinion-tag::after {
   content: "•";
   margin-left: 1rem;

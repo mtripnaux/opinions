@@ -50,7 +50,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
         return <Navigate to={`/${currentLang}`} replace />;
     }
 
-    const [profileData, setProfileData] = useState<{ id: string, question: string, tag: string }[]>([]);
+    const [profileData, setProfileData] = useState<{ id: string, question: string, tag: string, matchStatus?: 'same' | 'diff' }[]>([]);
     const [hoveredQuestion, setHoveredQuestion] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -125,20 +125,27 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                 setProfileUid(userDoc.id); 
                 const answers = userData.answers || {};
 
+                const myStored = localStorage.getItem('opinions_answers');
+                const myAnswers = myStored ? JSON.parse(myStored) : {};
+
                 const data = Object.entries(answers).map(([id, answer]) => {
                     const qData = questionsMap.get(id);
                     if (!qData) return null;
+
+                    let matchStatus: 'same' | 'diff' | undefined;
+                    if (myAnswers[id]) {
+                        matchStatus = (myAnswers[id] === answer) ? 'same' : 'diff';
+                    }
+
                     return {
                         id,
                         question: qData.question[currentLang],
-                        tag: answer === 'yes' ? (qData.answers.yes as string) : (qData.answers.no as string)
+                        tag: answer === 'yes' ? (qData.answers.yes as string) : (qData.answers.no as string),
+                        matchStatus
                     };
-                }).filter(Boolean) as { id: string, question: string, tag: string }[];
+                }).filter(Boolean) as { id: string, question: string, tag: string, matchStatus?: 'same' | 'diff' }[];
 
                 setProfileData(data);
-
-                const myStored = localStorage.getItem('opinions_answers');
-                const myAnswers = myStored ? JSON.parse(myStored) : {};
                 
                 let common = 0;
                 let same = 0;
@@ -241,7 +248,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                     ) : isOwner ? (
                         <>{t.myProfile} <strong>{username}</strong></>
                     ) : (
-                        <>{t.profileOf} <strong>{username}</strong> {compatibility !== null ? <span style={{fontSize: '0.8rem', opacity: 0.7}}>({compatibility}% {t.compat})</span> : <span style={{fontSize: '0.8rem', opacity: 0.5}} title={t.noCommon}>(-)</span>}</>
+                        <>{t.profileOf} <strong>{username}</strong> {compatibility !== null ? <span>({compatibility}% {t.compat})</span> : <span title={t.noCommon}>(-)</span>}</>
                     )}
                 </span>
                 <div style={{ display: 'flex', gap: '1rem' }}>
@@ -261,7 +268,7 @@ function UserProfile({ isGuest }: { isGuest?: boolean }) {
                     profileData.map((item) => (
                         <span
                             key={item.id}
-                            className={`opinion-tag ${isOwner ? 'clickable' : ''}`}
+                            className={`opinion-tag ${isOwner ? 'clickable' : ''} ${!isOwner && item.matchStatus ? (item.matchStatus === 'same' ? 'match' : 'mismatch') : ''}`}
                             onMouseEnter={() => setHoveredQuestion(item.question)}
                             onMouseLeave={() => setHoveredQuestion(null)}
                             onClick={() => isOwner && handleDeleteAnswer(item.id)}
